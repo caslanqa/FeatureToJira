@@ -90,13 +90,13 @@ public class App extends JFrame {
 
             if (!hasError) {
 
-                /*FileOperations.multiplyFeatureFiles(files);
+                FileOperations.multiplyFeatureFiles(files);
 
                 for (int i = 1; i <= files.size() ; i++) {
                     FileOperations.compressFeatures(i);
                 }
 
-                JOptionPane.showConfirmDialog(null, "Feature zip files created successfully", "Success", JOptionPane.OK_CANCEL_OPTION, JOptionPane.INFORMATION_MESSAGE);*/
+                JOptionPane.showConfirmDialog(null, "Feature zip files created successfully", "Success", JOptionPane.OK_CANCEL_OPTION, JOptionPane.INFORMATION_MESSAGE);
 
                 FileOperations.authToken = FileOperations.getAuthToken();
 
@@ -106,7 +106,8 @@ public class App extends JFrame {
                         if (FileOperations.uploadZipFile(i)) {
                             JOptionPane.showConfirmDialog(null, "Feature zip files uploaded", "Success", JOptionPane.OK_CANCEL_OPTION, JOptionPane.INFORMATION_MESSAGE);
                         }
-                    } catch (Exception ignored) {
+                    } catch (Exception exc) {
+                        exc.printStackTrace();
                     }
                 }
 

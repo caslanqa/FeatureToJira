@@ -17,6 +17,7 @@ import java.io.IOException;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipOutputStream;
 
+import static io.restassured.RestAssured.baseURI;
 import static io.restassured.RestAssured.given;
 
 
@@ -171,10 +172,9 @@ public class FileOperations {
 
         // Check if the request was successful and return the token
         if (authResponse.getStatusCode() == 200) {
-            return authResponse.asString().substring(1,authResponse.asString().length()-1);
+            return authResponse.asString().replace("\"","");
         } else {
-            System.out.println("Failed to get auth token. Status Code: " + authResponse.getStatusCode());
-            return null;
+            throw new RuntimeException("Authentication failed: " + authResponse.getBody().asString());
         }
     }
 
@@ -186,7 +186,7 @@ public class FileOperations {
         // Path to the ZIP file
         File zipFile = new File(zipFilePath);
 
-        // Create request specification for the upload request
+//         Create request specification for the upload request
         RequestSpecification uploadRequest = given()
                 .header("Authorization", "Bearer " + authToken)
                 .header("Content-Type", "multipart/form-data")
@@ -195,10 +195,13 @@ public class FileOperations {
 
         Response uploadResponse = null;
         try {
+
             uploadResponse = uploadRequest.post("/import/feature");
 
             System.out.println(uploadResponse.getStatusCode());
-        } catch (Exception ignored) {
+            System.out.println(uploadResponse.asPrettyString());
+        } catch (Exception e) {
+            e.printStackTrace();
         }
         return uploadResponse.getStatusCode()==200?true:false;
     }
