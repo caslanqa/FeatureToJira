@@ -195,7 +195,6 @@ public class FileOperations {
 
         Response uploadResponse = null;
         try {
-
             uploadResponse = uploadRequest.post("/import/feature");
 
             System.out.println(uploadResponse.getStatusCode());
